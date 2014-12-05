@@ -32,9 +32,9 @@ if __name__ == '__main__':
         port = 5000
         host = '127.0.0.1'
 
-    def pre_users_post_callback(item):
-            lyra2dir = "/home/bbarros/Code/Lyra2-FIWARE/bin/"
+    lyra2dir = "/home/bbarros/Code/Lyra2-FIWARE/bin/"
 
+    def pre_insert_callback(item):
             item[0]['lyra2salt'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
             print 'Lyra2 salt: "%s"' % item[0]['lyra2salt']
 
@@ -46,8 +46,36 @@ if __name__ == '__main__':
             item[0]['password'] = password_hash
             print 'Lyra2 output: "%s"' % password_hash
 
+    def pre_update_callback(item, original):
+            new_password = False
+
+            if not item.get('username'):
+                item['username'] = original['username']
+            if not item.get('password'):
+                item['password'] = original['password']
+                new_password = True
+            if not item.get('lyra2klen'):
+                item['lyra2klen'] = original['lyra2klen']
+                new_password = True
+            if not item.get('lyra2tcost'):
+                item['lyra2tcost'] = original['lyra2tcost']
+                new_password = True
+            if not item.get('lyra2nrows'):
+                item['lyra2nrows'] = original['lyra2nrows']
+                new_password = True
+
+            if new_password:
+                item['lyra2salt'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
+
+                cmd =  lyra2dir + "Lyra2" +" "+ item['username'] +" "+ item['password'] +" "+ item['lyra2salt'] +" "
+                cmd += item['lyra2klen'] +" "+ item['lyra2tcost'] +" "+ item['lyra2nrows']
+
+                password_hash = subprocess.check_output(cmd, shell=True).strip()
+                item['password'] = password_hash
+
     app = Eve()
 
-    app.on_insert_users += pre_users_post_callback
+    app.on_insert_users += pre_insert_callback
+    app.on_update_users += pre_update_callback
 
     app.run(host=host, port=port)

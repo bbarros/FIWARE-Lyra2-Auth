@@ -45,6 +45,9 @@ else:
 # Disable XML mime type for responses
 XML = False
 
+# Disable concurrency control
+IF_MATCH = False
+
 
 # Enable reads (GET), inserts (POST) and DELETE for resources/collections
 # (if you omit this line, the API will default to ['GET'] and provide
@@ -68,12 +71,7 @@ users = {
         'username': {
             'type': 'string',
             'required': True,
-        },
-        'firstname': {
-            'type': 'string',
-        },
-        'lastname': {
-            'type': 'string',
+            'unique':True,
         },
         'password': {
             'type': 'string',
