@@ -79,6 +79,21 @@ users = {
             'type': 'string',
             'required': True,
         },
+        'lyra2salt': {
+            'type': 'string',
+        },
+        'lyra2klen': {
+            'type': 'string',
+            'required': True,
+        },
+        'lyra2tcost': {
+            'type': 'string',
+            'required': True,
+        },
+        'lyra2nrows': {
+            'type': 'string',
+            'required': True,
+        },
     }
 }
 

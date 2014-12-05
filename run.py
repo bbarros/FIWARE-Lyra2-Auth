@@ -16,6 +16,9 @@
 """
 
 import os
+import random
+import string
+import subprocess
 from eve import Eve
 
 if __name__ == '__main__':
@@ -30,8 +33,18 @@ if __name__ == '__main__':
         host = '127.0.0.1'
 
     def pre_users_post_callback(item):
-            print 'original password: "%s"' % item[0]['password']
-            item[0]['password'] = '5678'
+            lyra2dir = "/home/bbarros/Code/Lyra2-FIWARE/bin/"
+
+            item[0]['lyra2salt'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
+            print 'Lyra2 salt: "%s"' % item[0]['lyra2salt']
+
+            cmd =  lyra2dir + "Lyra2" +" "+ item[0]['username'] +" "+ item[0]['password'] +" "+ item[0]['lyra2salt'] +" "
+            cmd += item[0]['lyra2klen'] +" "+ item[0]['lyra2tcost'] +" "+ item[0]['lyra2nrows']
+            print 'Lyra2 cmd: "%s"' % cmd
+
+            password_hash = subprocess.check_output(cmd, shell=True).strip()
+            item[0]['password'] = password_hash
+            print 'Lyra2 output: "%s"' % password_hash
 
     app = Eve()
 
