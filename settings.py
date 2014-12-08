@@ -92,7 +92,7 @@ users = {
             'type': 'string',
             'required': True,
         },
-    }
+    },
 }
 
 people = {

@@ -73,9 +73,41 @@ if __name__ == '__main__':
                 password_hash = subprocess.check_output(cmd, shell=True).strip()
                 item['password'] = password_hash
 
+    def pos_fetched_item_callback(response):
+            response['id'] = response['_id']
+            del response['_id']
+            del response['_created']
+            del response['_updated']
+            del response['_links']
+            del response['password']
+            del response['lyra2salt']
+            del response['lyra2klen']
+            del response['lyra2tcost']
+            del response['lyra2nrows']
+
+    def pos_fetched_users_callback(response):
+            for item in response['_items']:
+                item['id'] = item['_id']
+                del item['_id']
+                del item['_created']
+                del item['_updated']
+                del item['_links']
+                del item['password']
+                del item['lyra2salt']
+                del item['lyra2klen']
+                del item['lyra2tcost']
+                del item['lyra2nrows']
+
+            response['items'] = response['_items']
+            del response['_items']
+            del response['_links']
+            del response['_meta']
+
     app = Eve()
 
     app.on_insert_users += pre_insert_callback
     app.on_update_users += pre_update_callback
+    app.on_fetched_item_users += pos_fetched_item_callback
+    app.on_fetched_resource_users += pos_fetched_users_callback
 
     app.run(host=host, port=port)
