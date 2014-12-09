@@ -1,4 +1,4 @@
-Lyra2-based Authenticaiton Enabler
+Lyra2-based Authentication Enabler
 =================
 
 FIWARE Project (http://www.fi-ware.org/)
