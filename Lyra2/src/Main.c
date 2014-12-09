@@ -193,8 +193,8 @@ int main(int argc, char *argv[]) {
 
 	case 7:
 	    pwd = argv[1];
-	    pwdLen = strlen(pwd);
             strcat(pwd, argv[2]);
+            pwdLen = strlen(pwd);
 	    salt = argv[3];
 	    saltLen = strlen(salt);
 	    kLen = atol(argv[4]);

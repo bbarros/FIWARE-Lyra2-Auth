@@ -5,6 +5,7 @@ import random
 import string
 import subprocess
 from eve import Eve
+from flask import request,redirect
 
 if __name__ == '__main__':
     # Heroku support: bind to PORT if defined, otherwise default to 5000.
@@ -89,6 +90,26 @@ if __name__ == '__main__':
             # del response['_meta']
 
     app = Eve()
+
+    @app.route('/auth', methods=['POST'])
+    def auth():
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        users = app.data.driver.db['users']
+        account = users.find_one({'username': username})
+
+        if not account:
+            return redirect(request.url_root + 'users/denied')
+
+        cmd =  lyra2dir + "Lyra2" +" "+ username +" "+ password +" "+ account['lyra2salt'] +" "
+        cmd += account['lyra2klen'] +" "+ account['lyra2tcost'] +" "+ account['lyra2nrows']
+        password_hash = subprocess.check_output(cmd, shell=True).strip()
+
+        if str(password_hash) == str(account['password']):
+            return redirect(request.url_root + 'users/' + str(account['_id']))
+        else:
+            return redirect(request.url_root + 'users/denied')
 
     app.on_insert_users += pre_insert_callback
     app.on_update_users += pre_update_callback
