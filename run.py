@@ -1,20 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-    Eve Demo
-    ~~~~~~~~
-
-    A demostration of a simple API powered by Eve REST API.
-
-    The live demo is available at eve-demo.herokuapp.com. Please keep in mind
-    that the it is running on Heroku's free tier using a free MongoHQ
-    sandbox, which means that the first request to the service will probably
-    be slow. The database gets a reset every now and then.
-
-    :copyright: (c) 2014 by Nicola Iarocci.
-    :license: BSD, see LICENSE for more details.
-"""
-
 import os
 import random
 import string
@@ -32,7 +17,7 @@ if __name__ == '__main__':
         port = 5000
         host = '127.0.0.1'
 
-    lyra2dir = "/home/bbarros/Code/Lyra2-FIWARE/bin/"
+    lyra2dir = "./Lyra2/bin/"
 
     def pre_insert_callback(item):
             item[0]['lyra2salt'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
@@ -76,9 +61,9 @@ if __name__ == '__main__':
     def pos_fetched_item_callback(response):
             response['id'] = response['_id']
             del response['_id']
-            del response['_created']
-            del response['_updated']
-            del response['_links']
+            # del response['_created']
+            # del response['_updated']
+            # del response['_links']
             del response['password']
             del response['lyra2salt']
             del response['lyra2klen']
@@ -89,9 +74,9 @@ if __name__ == '__main__':
             for item in response['_items']:
                 item['id'] = item['_id']
                 del item['_id']
-                del item['_created']
-                del item['_updated']
-                del item['_links']
+                # del item['_created']
+                # del item['_updated']
+                # del item['_links']
                 del item['password']
                 del item['lyra2salt']
                 del item['lyra2klen']
@@ -100,8 +85,8 @@ if __name__ == '__main__':
 
             response['items'] = response['_items']
             del response['_items']
-            del response['_links']
-            del response['_meta']
+            # del response['_links']
+            # del response['_meta']
 
     app = Eve()
 

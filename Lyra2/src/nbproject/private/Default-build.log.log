@@ -1,0 +1,16 @@
+ 
+To build Lyra2, type:
+      make OPTION [nCols=(number of columns, default 64)]
+ 
+where OPTION can be one of the following:
+generic-x86-64                      For x86-64 Unix-like system, with gcc (i.e., Linux, FreeBSD, Mac OS, etc.)
+linux-x86-64-sse2                   Linux x86-64, with SSE2 (beta version, needs improvement)
+linux-x86-64-cuda                   Linux x86-64 (native), with CUDA (experimental)
+linux-x86-64-cuda-tested-arch       Linux x86-64 (native), with CUDA (on architecture where the tests were performed)
+windows-x86-64                      Windows x86-64, Cygwin
+win-cygwin-x86-64-sse2              Windows x86-64, Cygwin, with SSE2 (beta version, needs improvement)
+ 
+Notes:
+Lyra2 was tested with nCols=16, nCols=32, nCols=64, nCols=96, and nCols=128 
+This implementation is known to have issues for large memory usage. The maximum tested memory usage was 1.6 GB 
+ 
