@@ -1,4 +1,6 @@
-FIWARE - Lyra2-based Authenticaiton Enabler
+Lyra2-based Authenticaiton Enabler
 =================
 
-Category: Security
+FIWARE Project (http://www.fi-ware.org/)
+
+Enabler category: Security
